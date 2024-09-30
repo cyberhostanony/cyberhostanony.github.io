@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="CyberHost: Taming Audio-driven Avatar Diffusion Model with Region Codebook Attention">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberHost: Taming Audio-driven Avatar Diffusion Model with Region Codebook Attention</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h1 class="title is-1 publication-title">
+          CyberHost: Taming Audio-driven Avatar Diffusion Model with Region Codebook Attention </h1>
+      </div>  
+
+    </div>
+
+
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Diffusion-based video generation technology has advanced significantly, catalyzing a proliferation of research in human animation. However, the majority of these studies are confined to same-modality driving settings, with cross-modality human body animation remaining relatively underexplored. In this paper, we introduce <b>CyberHost</b>, an end-to-end audio-driven human animation framework that ensures hand integrity, identity consistency, and natural motion. The key design of CyberHost is the Region Codebook Attention mechanism, which improves the generation quality of facial and hand animations by integrating fine-grained local features with learned motion pattern priors. Furthermore, we have developed a suite of human-prior-guided training strategies, including body movement map, hand clarity score, pose-aligned reference feature, and local enhancement supervision, to improve synthesis results. To our knowledge, CyberHost is the first end-to-end audio-driven human diffusion model capable of facilitating zero-shot video generation within the scope of the human body. Extensive experiments demonstrate that CyberHost surpasses previous works in both quantitative and qualitative aspects.
+          </p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-5.png" width="25%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="25%">
+            <source src="./static/videos/a2v_openset_5_watermarked.mp4"
+                    type="video/mp4">
+          </video> 
+
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-8.png" width="22.25%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="22.0%">
+            <source src="./static/videos/a2v_openset_8_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <b>*</b> The teasers above are generated after super-resolution processing.
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Overall Framework -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overall Framework</h2>
+        <div class="content has-text-justified">
+          <!-- <p>
+            The overall framework of CyberHost is demonstrated as follows:
+          </p> -->
+          <p>
+            <img src="./static/images/overall.png"
+      class="interpolation-image"
+      alt="The overall structure of CyberHost."/>
+          </p>
+          <p>
+            CyberHost employs a dual U-Net architecture as its foundational structure and utilizes the motion frame strategy for temporal continuation, establishing a baseline for audio-driven body animation. 
+          </p>
+          <p>
+            Based on the baseline, to enhance the modeling capability for the key human region, i.e., hands and faces, we adapt the proposed Region Codebook Attention to both the facial and hand regions and insert them into multiple stages of the Denoising U-Net. The Region Codebook consists of two parts: the motion codebook learned from the dataset and the identity descriptor extracted from cropped local images. 
+          </p>
+          <p>
+            To reduce the uncertainty in full-body animation driven solely by audio, several improvements have been implemented:  (1) The Body Movement Map is employed to stabilize the root movements of the body. It is encoded and merged with the noised latent, serving as the input for the denoising U-Net.  (2) Hand clarity is explicitly enhanced by incorporating the Hand Clarity Score as a residual into the time embedding to mitigate the effects of motion blur in the data. (3) The Pose Encoder encodes the reference skeleton map, which is then integrated into the reference latent, yielding a Pose-aligned Reference Feature.  
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Overall Framework -->
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container">
+    <!-- Main compare video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+
+
+        <!-- MultiModal-Driven Comparison-->
+        <h3 class="title is-3">Multimodal-Driven Demo</h3>
+        CyberHost supports mixed-signal driving. The driving signals for the generated results below come from hand pose templates and audio.
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/multimodal-driven-clip1.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp &nbsp &nbsp &nbsp
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/multimodal-driven-clip2.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+
+        <div><p>&nbsp</p></div>
+
+        <!-- Open-set Cases-->
+        <h3 class="title is-3">Audio-Driven Demos on Open-set Test Images</h3>
+        <p>
+          CyberHost achieves zero-shot human animation on open-set test images in audio-driven settings.
+        </p>
+        <!-- <p>
+          <b>*</b> All test images were sourced from the internet or generated via AIGC. If there are any copyright issues, please contact lingaojie@bytedance.com to have the demo taken down.
+        </p> -->
+
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-6.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_6_watermarked.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-2.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_2_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div><p>&nbsp</p></div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-4.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_4_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-1.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_1_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div><p>&nbsp</p></div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-12.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_12_watermarked.mp4"
+                    type="video/mp4">
+          </video>    
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-11.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_11_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-9.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_9_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-10.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_10_watermarked.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+        <div><p>&nbsp</p></div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="./static/images/ad-openset-14.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_14_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <img src="./static/images/ad-openset-7.png" width="30%"/>
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="30%">
+            <source src="./static/videos/a2v_openset_7_watermarked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+
+        <div><p>&nbsp</p></div>
+
+        <!-- Audio2Video Comparison-->
+        <h3 class="title is-3">Audio to Video Comparison with Baselines</h3>
+        <h4 class="title is-4">Compare to DiffGesture & MimicMotion</h4>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_comp_clip1.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_comp_clip2.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+        <div><p>&nbsp</p></div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_comp_clip3.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_comp_clip4.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+        <div><p>&nbsp</p></div>
+        <h4 class="title is-4">Compare to Vlogger</h4>
+        <b>*</b> Images and audio are provided by <a href="https://zhuangshaobin.github.io/Vlogger.github.io">Vlogger homepage</a>
+        
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_vlogger_cmp_clip1.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_vlogger_cmp_clip2.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+        <div><p>&nbsp</p></div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_vlogger_cmp_clip3.mp4"
+                    type="video/mp4">
+          </video> 
+          &nbsp
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="60%">
+            <source src="./static/videos/a2v_vlogger_cmp_clip4.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+
+        <div><p>&nbsp</p></div>
+
+        <!-- Video2Video Comparison-->
+        <h3 class="title is-3">Video to Video Comparison with Baselines</h3>
+        CyberHost supports video-driven body reenactment and surpasses current state-of-the-art methods in terms of generation quality. The driving signals are skeleton maps extracted from the GT(ground-truth) video using DWPose, and the reference frame is the first frame of the GT video.
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="100%">
+            <source src="./static/videos/V2V_CMP.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+
+        <div><p>&nbsp</p></div>
+        <h3 class="title is-3">Ethics Concerns</h3>
+        <div class="column has-text-justified">
+          The purpose of this work is only for research. The images and audios used in these demos are from public sources.
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+</body>
+
+<script>
+  function comming_soon_click() {
+    alert('Comming soon!');
+  }
+  function TBD_click() {
+    alert('To be determined');
+  }
+</script>
+</html>
