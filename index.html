@@ -285,7 +285,7 @@
             controls
             preload
             playsinline
-            width="95%">
+            width="100%">
             <source src="./static/videos/A2V_CMP_CROP.mp4"
                     type="video/mp4">
           </video> 
@@ -346,6 +346,32 @@
             playsinline
             width="100%">
             <source src="./static/videos/V2V_CMP.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+
+        <!-- Ablation Study -->
+        <h3 class="title is-3">Ablation Study</h3>
+        We separately removed the Temporal Latents and the spatio-temporal Latents Bank from the RAM module to validate the effectiveness of the RAM structure design.
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="100%">
+            <source src="./static/videos/LATENT_ABLATION_DUB.mp4"
+                    type="video/mp4">
+          </video> 
+        </div>
+
+        We remove both the Region Attention Modules and the Human-prior-guided Comditions from the CyberHost framework to implement a one-stage baseline for comparison.
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <video id="main-compare-video"
+            controls
+            preload
+            playsinline
+            width="100%">
+            <source src="./static/videos/Baseline_Ablation.mp4"
                     type="video/mp4">
           </video> 
         </div>
